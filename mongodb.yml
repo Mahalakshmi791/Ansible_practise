@@ -1,0 +1,30 @@
+- name: Mongodb application
+  hosts: mongodb
+  become: yes
+  tasks:
+    - name: setup mango repo file to repos configuration
+      ansible.builtin.copy:
+        src: mongo.repo
+        dest: /etc/yum.repos.d/mongo.repo
+      
+    - name: install mongodb
+      ansible.builtin.package:
+        name: mongodb-org
+        state: present
+
+    - name: enable mongodb service and start it
+      ansible.builtin.service:
+        name: mongod
+        enabled: yes
+        state: started
+
+    - name: edit config file to accept connections from internet
+      ansible.builtin.replace:
+        path: /etc/mongod.conf
+        regexp: '127.0.0.1'
+        replace: '0.0.0.0'
+
+    - name: restart mongod service
+      ansible.builtin.service:
+        name: mongod
+        state: restarted 

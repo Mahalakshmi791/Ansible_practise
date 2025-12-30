@@ -1,0 +1,80 @@
+- name: catalogue service
+  hosts: catalogue
+  become: yes
+  tasks:
+    - name: disable default version of nodejs
+      ansible.builtin.command: dnf module disable nodejs -y
+
+    - name: making nodejs 20 as default version
+      ansible.builtin.command: dnf module enable nodejs:20 -y
+
+    - name: install nodejs
+      ansible.builtin.package:
+        name: nodejs
+        state: present
+
+    - name: system user setup
+      ansible.builtin.user:
+        name: roboshop
+        shell: /sbin/nologin
+        home: /app
+        create_home: yes
+        system: yes
+      
+    - name: create directory
+      ansible.builtin.file:
+        path: /app
+        state: directory
+    
+    - name: download application code
+      ansible.builtin.get_url:
+        url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
+        dest: /tmp/catalogue.zip
+
+    - name: unzip file to specific path
+      ansible.builtin.unarchive:
+        src: /tmp/catalogue.zip
+        dest: /app
+
+    - name: move to specific directory
+      ansible.builtin.command: cd /app
+
+    - name: installing npm dependencies
+      community.buitlin.npm:
+        path: /app
+    
+    - name: copy catalogue service to systemd path
+      ansible.builtin.copy:
+        src: catalogue.service
+        dest: /etc/systemd/system/catalogue.service
+
+    - name: daemon reload
+      ansible.builtin.systemd_service:
+        daemon_reload: true
+      
+    - name: enable and start catalogue service
+      ansible.builtin.service:
+        name: catalogue
+        state: started
+        enabled: yes
+
+    - name: copy mongodb repo to repos directory
+      ansible.builtin.copy:
+        src:  mongo.repo
+        dest: /etc/yum.repos.d/mongo.repo
+
+    - name: installing mongodb client server
+      ansible.builtin.package:
+        name: mongodb-mongosh
+        state:  present
+    
+    - name: check if data already loaded into mongodb
+      ansible.builtin.command: mongosh --quiet --host mongodb.robotshop.site --eval "db.adminCommand('listDatabases').databases.map(db => db.name).includes('catalogue')"
+      register: command_output
+      changed_when: false
+
+    - name: load items into mongodb if it's not loaded earlier
+      ansible.builtin.command: mongosh --host mongodb.robotshop.site </app/db/master-data.js
+      when: command_output.stdout == 'false'
+    
+    

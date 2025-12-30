@@ -1,0 +1,21 @@
+- name: mysql component
+  hosts: mysql
+  become: yes
+  tasks:
+    - name: install mysql
+      ansible.builtin.package:
+        name: mysql-server
+        state: present
+
+    - name: enable and start mysql service
+      ansible.builtin.service:
+        name: mysqld
+        enabled: yes
+        state: started
+
+    - name: Set MySQL root password
+      community.mysql.mysql_user:
+        name: root
+        password: "RoboShop@1"
+        priv: "*.*:ALL,GRANT"
+        state: present   
