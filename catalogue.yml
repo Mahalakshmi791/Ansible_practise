@@ -75,7 +75,7 @@
       changed_when: false
 
     - name: load items into mongodb if it's not loaded earlier
-      ansible.builtin.command: mongosh --host mongodb.robotshop.site </app/db/master-data.js
+      ansible.builtin.shell: mongosh --host mongodb.robotshop.site </app/db/master-data.js
       when: command_output.stdout == 'false'
     
     
