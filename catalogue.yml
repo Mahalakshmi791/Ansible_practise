@@ -40,7 +40,7 @@
       ansible.builtin.command: cd /app
 
     - name: installing npm dependencies
-      community.buitlin.npm:
+      community.builtin.npm:
         path: /app
     
     - name: copy catalogue service to systemd path
