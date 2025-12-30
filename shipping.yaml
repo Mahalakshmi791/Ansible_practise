@@ -12,7 +12,7 @@
 
     - name: Install PyMySQL via pip as it is required dependency for mysql community module to communicate to mysql
       ansible.builtin.pip:
-        name: "{ item }"
+        name: "{{ item }}"
         executable: pip3
       loop:
       - cryptography
