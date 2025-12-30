@@ -22,9 +22,9 @@
       community.rabbitmq.rabbitmq_user:
         user: roboshop
         permissions:
-          configure: ".*"
-          write: ".*"
-          read: ".*"
+          - configure: ".*"
+            write: ".*"
+            read: ".*"
         password: roboshop123
         vhost: /
         state: present
