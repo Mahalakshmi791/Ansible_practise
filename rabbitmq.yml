@@ -21,7 +21,10 @@
     - name: create rabbitmq user,set password and permissions to user
       community.rabbitmq.rabbitmq_user:
         user: roboshop
-        permissions: ".* .* .*"
+        permissions:
+          configure: ".*"
+          write: ".*"
+          read: ".*"
         password: roboshop123
         vhost: /
         state: present
