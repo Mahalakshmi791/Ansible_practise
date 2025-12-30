@@ -11,7 +11,7 @@
         - mysql
     
     - name: system user setup
-      ansible.buitlin.user:
+      ansible.builtin.user:
         name: roboshop
         home: /app
         system: yes
