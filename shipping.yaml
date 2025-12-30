@@ -36,6 +36,10 @@
 
     - name: install dependencies using maven in app directory
       ansible.builtin.command: mvn clean package
+      args:
+        chdir: /app
+    
+    - name: install dependencies using maven in app directory
       ansible.builtin.command: mv target/shipping-1.0.jar shipping.jar
       args:
         chdir: /app
