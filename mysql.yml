@@ -13,6 +13,11 @@
         enabled: yes
         state: started
 
+    - name: Install PyMySQL via pip as it is required dependency for mysql community module to communicate to mysql
+      ansible.builtin.pip:
+        name: PyMySQL
+        executable: pip3
+
     - name: Set MySQL root password
       community.mysql.mysql_user:
         name: root
