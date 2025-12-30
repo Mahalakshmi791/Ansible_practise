@@ -12,7 +12,7 @@
         state: present
     
     - name: system user setup
-      ansible.buitlin.user:
+      ansible.builtin.user:
         name: roboshop
         home: /app
         system: yes
@@ -39,7 +39,7 @@
       ansible.builtin.command: cd /app
 
     - name: install npm dependencies
-      community.general.npm:
+      ansible.builtin.npm:
         path: /app
 
     - name: copying service file to systemd
