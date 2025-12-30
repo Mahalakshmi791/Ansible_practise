@@ -37,9 +37,6 @@
         dest: /app
         remote_src: yes
 
-    - name: move to specific directory
-      ansible.builtin.command: cd /app
-
     - name: installing npm dependencies
       ansible.builtin.npm:
         path: /app
@@ -69,13 +66,13 @@
         name: mongodb-mongosh
         state:  present
     
-    - name: check if data already loaded into mongodb
-      ansible.builtin.command: mongosh --quiet --host mongodb.robotshop.site --eval "db.adminCommand('listDatabases').databases.map(db => db.name).includes('catalogue')"
-      register: command_output
-      changed_when: false
+    # - name: check if data already loaded into mongodb
+    #   ansible.builtin.command: mongosh --quiet --host mongodb.robotshop.site --eval "db.adminCommand('listDatabases').databases.map(db => db.name).includes('catalogue')"
+    #   register: command_output
+    #   changed_when: false
 
-    - name: load items into mongodb if it's not loaded earlier
-      ansible.builtin.shell: mongosh --host mongodb.robotshop.site </app/db/master-data.js
-      when: command_output.stdout == 'false'
+    # - name: load items into mongodb if it's not loaded earlier
+    #   ansible.builtin.shell: mongosh --host mongodb.robotshop.site </app/db/master-data.js
+    #   when: command_output.stdout == 'false'
     
     
