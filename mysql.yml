@@ -13,10 +13,5 @@
         enabled: yes
         state: started
 
-    - name: Install PyMySQL via pip as it is required dependency for mysql community module to communicate to mysql
-      ansible.builtin.pip:
-        name: PyMySQL
-        executable: pip3
-
     - name: setp root password
       ansible.builtin.command: mysql_secure_installation --set-root-pass RoboShop@1  
