@@ -9,11 +9,14 @@
       loop:
         - maven
         - mysql
-        
+
     - name: Install PyMySQL via pip as it is required dependency for mysql community module to communicate to mysql
       ansible.builtin.pip:
-        name: PyMySQL
+        name: "{ item }"
         executable: pip3
+      loop:
+      - cryptography
+      - PyMySQL
     
     - name: system user setup
       ansible.builtin.user:
@@ -66,10 +69,10 @@
 
     - name: loading data into mysql
       community.mysql.mysql_db:
+        name: all
         login_user: root
         login_password: RoboShop@1
         login_host: mysql.robotshop.site
-        name: all
         state: import
         target: "{{ item }}"
       loop:
