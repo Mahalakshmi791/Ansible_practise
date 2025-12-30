@@ -18,9 +18,5 @@
         name: PyMySQL
         executable: pip3
 
-    - name: Set MySQL root password
-      community.mysql.mysql_user:
-        name: root
-        password: "RoboShop@1"
-        priv: "*.*:ALL,GRANT"
-        state: present   
+    - name: setp root password
+      ansible.builtin.command: mysql_secure_installation --set-root-pass RoboShop@1  
