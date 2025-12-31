@@ -37,8 +37,10 @@
     
     - name: install python dependencies
       ansible.builtin.pip:
-        requirements: /app/requirements.txt
+        requirements: requirements.txt
         executable: pip3.9
+      args:
+        chdir: /app
     
     - name: copying service file to systemd
       ansible.builtin.copy:
