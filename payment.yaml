@@ -11,6 +11,11 @@
         - gcc
         - python3-devel
     
+    - name: create app directory
+      ansible.builtin.file:
+        path : /app
+        state: directory
+    
     - name: system user setup
       ansible.builtin.user:
         name: roboshop
@@ -19,10 +24,7 @@
         shell: /sbin/nologin
         create_home: yes
 
-    - name: create app directory
-      ansible.builtin.file:
-        path : /app
-        state: directory
+    
     
     - name: download url into tmp
       ansible.builtin.get_url:
